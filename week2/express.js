@@ -1,8 +1,22 @@
-const express = require('express')
-const app = express()
+let http = require('http');
+let fs = require('fs');
+let url = require('url');
 
-app.get('/', function (req, res) {
-    res.send('Hello World')
-})
+let app = http.createServer(function(request,response){
+    let _url = request.url;
+    let queryData = url.parse(_url,true).query;
+    console.log(queryData.id);
+    if(url == '/'){
+        url = '/index.html';
+    }
+    if(url == '/favicon.ico'){
+        response.writeHead(404);
+        response.end();
+        return;
+    }
+    response.writeHead(200);
+    console.log(__dirname + url);
+    response.end(queryData.id);
 
-app.listen(3000)
+});
+app.listen(3000);
